@@ -29,7 +29,7 @@ export const pasteSlice = createSlice({
             state.pastes = []
             localStorage.removeItem("pastes")
         },
-        removeFromPaste: (state, action) => {
+        removeFromPastes: (state, action) => {
             const pasteId = action.payload
             console.log(pasteId)
             const index = state.pastes.findIndex((item) => item._id === pasteId)
@@ -43,6 +43,6 @@ export const pasteSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { addToPastes, updateToPastes, resetAllPastes, removeFromPaste } = pasteSlice.actions
+export const { addToPastes, updateToPastes, resetAllPastes, removeFromPastes } = pasteSlice.actions
 
 export default pasteSlice.reducer

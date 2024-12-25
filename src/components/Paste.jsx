@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
+import { removeFromPastes } from "../redux/pasteSlice";
+import toast from "react-hot-toast";
 
 const paste = () => {
 
   const pastes = useSelector((state) => state.paste.pastes);
   console.log(pastes)
   const [searchTerm, setSearchTerm] = useState('')
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
   const filteredData = pastes.filter((paste) => paste.title.toLowerCase().includes(searchTerm.toLowerCase()))
 
+  function handleDelete(pasteId) {
+    dispatch(removeFromPastes(pasteId))
+  }
 
   return (
     <div>
@@ -25,7 +30,7 @@ const paste = () => {
           filteredData.map(
             (paste) => {
               return (
-                <div key={paste.id}
+                <div key={paste._id}
                   className="border ">
                   <div>
                     {paste.title}
@@ -34,10 +39,19 @@ const paste = () => {
                     {paste.content}
                   </div>
                   <div className="flex flex-row gap-4 justify-evenly">
-                    <button>Edit</button>
-                    <button>View</button>
-                    <button>Delete</button>
-                    <button>Copy</button>
+                    <button>
+                      <a href={`/?pasteId=${paste?._id}`}>
+                      edit</a>
+                    </button>
+                    <button>
+                      <a href={`/pastes/${paste?._id}`}>
+                      view</a>
+                    </button>
+                    <button onClick={()=>handleDelete(paste?._id)}>Delete</button>
+                    <button onClick={()=>{
+                      navigator.clipboard.writeText(paste?.content)
+                      toast.success("copied to clipboard")
+                    }}>Copy</button>
                     <button>Share</button>
                   </div>
                   <div>
